@@ -1,0 +1,3 @@
+let person = "Hinda", age = 37, occupation = "Teacher"
+
+console.log(person);
