@@ -10,3 +10,4 @@ countrySelect.addEventListener("change", function () {
     result.textContent = "None";
   }
 });
+

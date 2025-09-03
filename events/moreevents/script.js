@@ -52,3 +52,5 @@ myForm.addEventListener("submit", (e) => {
   e.preventDefault(); // Prevent page reload
   formResult.textContent = `Submit: Name = ${nameInput.value}, Email = ${emailInput.value}`;
 });
+
+
