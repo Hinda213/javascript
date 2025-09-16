@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cookie Example</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  input, button {
+    padding: 8px;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Welcome to Our Website!</h1>
+<div id="greeting"></div>
+
+<div id="inputSection">
+  <label for="username">Enter your name:</label>
+  <input type="text" id="username" placeholder="Your name">
+  <button onclick="saveName()">Save</button>
+</div>
+
+<script>
+// Function to set a cookie
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + days*24*60*60*1000);
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + value + ";" + expires + ";path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+    const cookieArr = document.cookie.split(";");
+    for(let i=0; i<cookieArr.length; i++){
+        let cookie = cookieArr[i].trim();
+        if(cookie.startsWith(name + "=")){
+            return cookie.substring((name + "=").length, cookie.length);
+        }
+    }
+    return "";
+}
+
+// Function to delete a cookie
+function deleteCookie(name){
+    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+}
+
+// Function to save user name in cookie
+function saveName(){
+    const name = document.getElementById("username").value;
+    if(name){
+        setCookie("username", name, 7); // cookie valid for 7 days
+        greetUser(name);
+        document.getElementById("inputSection").style.display = "none";
+    }
+}
+
+// Function to greet user
+function greetUser(name){
+    const greetingDiv = document.getElementById("greeting");
+    greetingDiv.innerHTML = `<h2>Welcome back, ${name}!</h2>`;
+}
+
+// On page load, check if username cookie exists
+window.onload = function(){
+    const user = getCookie("username");
+    if(user){
+        greetUser(user);
+        document.getElementById("inputSection").style.display = "none";
+    }
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes App with LocalStorage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #eee;
+      margin: 5px 0;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 5px;
+    }
+    button.delete {
+      background: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📝 My Notes</h2>
+    <input type="text" id="noteInput" placeholder="Write a note...">
+    <button onclick="addNote()">Add Note</button>
+    <ul id="notesList"></ul>
+  </div>
+
+  <script>
+    // Load notes from localStorage when page opens
+    window.onload = function() {
+      loadNotes();
+    };
+
+    function addNote() {
+      let noteInput = document.getElementById("noteInput");
+      let note = noteInput.value.trim();
+
+      if (note) {
+        let notes = JSON.parse(localStorage.getItem("notes")) || [];
+        notes.push(note);
+        localStorage.setItem("notes", JSON.stringify(notes));
+        noteInput.value = "";
+        loadNotes();
+      }
+    }
+
+    function loadNotes() {
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+      let notesList = document.getElementById("notesList");
+      notesList.innerHTML = "";
+
+      notes.forEach((note, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `
+          ${note} 
+          <button class="delete" onclick="deleteNote(${index})">X</button>
+        `;
+        notesList.appendChild(li);
+      });
+    }
+
+    function deleteNote(index) {
+      let notes = JSON.parse(localStorage.getItem("notes")) || [];
+      notes.splice(index, 1);
+      localStorage.setItem("notes", JSON.stringify(notes));
+      loadNotes();
+    }
+  </script>
+</body>
+</html>
